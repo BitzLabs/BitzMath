@@ -12,6 +12,21 @@ BitzMathは、BitzLabsエコシステム内で数式を構造的に扱い、レ�
     2.  **専用API (Fluent API)**: C#やTypeScriptのコードから、流れるようなインターフェースで`MathAST`を安全かつプログラム的に構築できます。
 -   **レイアウトエンジン**: `MathAST`を受け取り、数式の組版ルール（上付き文字の位置、分数のレイアウトなど）を計算し、描画プリミティブの集合である**`LayoutAST`**を生成します。
 
+## ✅ 初期開発ToDoリスト
+
+1.  **`MathAST`の型定義**:
+    *   `BitzAstCore`の`IAstNode`を継承した`IMathNode`インターフェースを定義。
+    *   `FractionNode`, `PowerNode`, `IdentifierNode`, `NumberNode`など、主要なASTノードクラスの「殻」を作成。
+2.  **専用API (ビルダー) の設計**:
+    *   `MathBuilder`静的クラスを作成し、`Fraction(num, den)`のようなメソッドを定義。内部で対応する`FractionNode`をインスタンス化して返す。
+3.  **パーサーの骨格**:
+    *   `MathParser`クラスを作成し、`BitzParser`の`ParserBase`を継承。
+    *   `Parse()`メソッドを実装し、まずは`1`や`x`、`1+2`のような最も単純な式をパースして対応するASTノードを返すロジックを実装。
+4.  **レイアウトエンジンのインターフェース**:
+    *   `MathLayoutEngine`クラスを作成。
+    *   `Render(IMathNode node)`メソッドを定義し、出力として`BitzLayout`の`ILayoutNode`を返すようにする。
+    *   初期実装では、`NumberNode`を受け取ったら対応する`TextSpanNode`を返す、という単純な変換ロジックを実装。
+
 ## このライブラリの位置づけ
 
 このライブラリは、主に`BitzDoc`から利用され、Markdown文書内に高品質な数式を埋め込む機能を提供します。また、BitzLabsをSDKとして利用するアプリケーションが、動的に数式を描画するためにも使用されます。
@@ -28,5 +43,3 @@ BitzMathは、BitzLabsエコシステム内で数式を構造的に扱い、レ�
 -   `BitzAstCore`
 -   `BitzParser`
 -   `BitzLayout` (出力型として)
-
----
